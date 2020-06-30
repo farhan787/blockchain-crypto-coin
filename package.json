@@ -4,7 +4,7 @@
   "description": "A basic implementation of a block chain crypto coin",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js",
+    "start": "node src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Muhammad Farhan",
