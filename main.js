@@ -17,6 +17,11 @@ class Block {
     this.data = data;
     this.previousHash = previousHash;
     this.hash = this.calculateHash();
+
+    // a random value used to change some content of a block while mining a new block
+    // as new hash won't be created until we change something from the params that we're using to createHash
+    // and changing nonce value won't affect the data of the block
+    this.nonce = 0;
   }
 
   calculateHash() {
@@ -24,14 +29,31 @@ class Block {
       this.index +
         this.timestamp +
         this.previousHash +
+        this.nonce +
         JSON.stringify(this.data)
     ).toString();
+  }
+
+  /**
+   * Proof of work: we don't want to add thousands of new blocks per second to keep our blockchain secure
+   * difficulty is the #zeroes in the starting of the hash
+   * more difficulty => more time for mining a block because of computational heavy operations
+   */
+  mine(difficulty) {
+    while (
+      this.hash.substring(0, difficulty) !== Array(difficulty + 1).join('0')
+    ) {
+      this.nonce++;
+      this.hash = this.calculateHash();
+    }
+    console.log('Block mined: ', this.hash);
   }
 }
 
 class BlockChain {
   constructor() {
     this.chain = [this.createGenesisBlock()];
+    this.difficulty = 3;
   }
 
   // Genesis block => the first block in the blockchain having no previousHash
@@ -45,7 +67,7 @@ class BlockChain {
 
   addBlock(newBlock) {
     newBlock.previousHash = this.getLatestBlock().hash;
-    newBlock.hash = newBlock.calculateHash();
+    newBlock.mine(this.difficulty);
     this.chain.push(newBlock);
   }
 
