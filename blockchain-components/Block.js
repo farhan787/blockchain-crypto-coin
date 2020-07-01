@@ -1,4 +1,4 @@
-const SHA256 = require('crypto-js/sha256');
+const { SHA256 } = require('crypto-js');
 
 class Block {
   constructor(timestamp, transactions, previousHash = '') {
@@ -35,6 +35,15 @@ class Block {
       this.hash = this.calculateHash();
     }
     console.log('Block mined: ', this.hash);
+  }
+
+  hasValidTransactions() {
+    for (const transaction of this.transactions) {
+      if (!transaction.isValidTransaction()) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
