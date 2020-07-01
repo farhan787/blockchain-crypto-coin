@@ -4,6 +4,7 @@ const BlockChain = require('../blockchain-components/BlockChain.js');
 const EC = require('elliptic').ec;
 const ec = new EC('secp256k1');
 
+// Private key generated using src/keygenerator.js file
 const myKey = ec.keyFromPrivate(
   '3f5cde8a77e41f8f29c0ce280d4e3005893361116a16d5626cdbff7ce9d0ad67'
 );
